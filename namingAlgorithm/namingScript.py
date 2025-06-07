@@ -1,6 +1,6 @@
 import os, glob
 
-directory = '/home/emanuel/Documents/myGalleryProject/photos'
+directory = '/home/emanuel/myGalery/photos'
 
 my_files = glob.glob(os.path.join(directory, '*jpg'))
 my_files.sort(key=os.path.getctime)
