@@ -1,0 +1,13 @@
+#title{
+    text-align: center;
+}
+
+
+/* Standardized image sizing */
+.photo {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;  /* This keeps images from getting distorted */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
