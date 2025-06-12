@@ -1,21 +1,118 @@
-#title{
+/* General body styling */
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+}
+
+#title {
     text-align: center;
+    color: #ffffff;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+    margin: 40px 0;
+    padding: 0 20px;
 }
 
 /* Container using CSS Grid for masonry layout */
 #container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-auto-rows: 10px; /* Small row height for fine control */
-    gap: 0; /* No gaps between grid items */
-    padding: 10px;
+    grid-auto-rows: 10px;
+    column-gap: 8px; /* Horizontal spacing between images */
+    row-gap: 0.5px;    /* Minimal vertical spacing */
+    padding: 15px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 /* Style for all images in the container */
 #container img {
     width: 100%;
     height: auto;
-    object-fit: cover; /* Ensures images fill their space nicely */
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    grid-row-end: span var(--row-span);
+    opacity: 0; /* Start invisible */
+    transform: translateY(20px) scale(0.95); /* Start slightly smaller and lower */
+}
+
+/* Loading state - shimmer effect */
+#container img.loading {
+    background: linear-gradient(90deg, #444 25%, #555 50%, #444 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    min-height: 200px; /* Placeholder height */
+}
+
+/* Fade-in animation - only sets final state */
+#container img.fade-in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Hover effects - now independent of fade-in */
+#container img.fade-in:hover {
+    transform: translateY(-5px) scale(1.08) !important;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.6) !important;
+    transition: transform 0.6s ease, box-shadow 0.6s ease !important;
+    z-index: 10;
+    position: relative;
     border-radius: 8px;
-    grid-row-end: span var(--row-span); /* Dynamic spanning based on image height */
+}
+
+/* Shimmer loading animation - darker for dark theme */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Loading indicator */
+.loading {
+    text-align: center;
+    color: white;
+    font-size: 1.2rem;
+    margin: 20px;
+    opacity: 0.8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #title {
+        font-size: 2rem;
+        margin: 20px 0;
+    }
+    
+    #container {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        padding: 15px;
+        gap: 1px;
+    }
+}
+
+@media (max-width: 480px) {
+    #title {
+        font-size: 1.5rem;
+    }
+    
+    #container {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
 }

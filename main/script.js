@@ -26,31 +26,49 @@ function loadImages() {
     console.log(`Loading batch, total loaded: ${loadedImages.size}`); // Debug log
     
     const randomImageNumbers = getRandomImageNumbers(batchSize);
+    let loadedCount = 0; // Declare loadedCount here
     
     randomImageNumbers.forEach(imageNum => {
         const newImg = document.createElement('img');
         newImg.src = `${baseURL}${imageNum}.jpg`;
         
-        newImg.onload = () => {
+        // Use addEventListener for load event
+        newImg.addEventListener('load', () => {
+            // Remove loading class and add fade-in animation
+            newImg.classList.remove('loading');
+            newImg.classList.add('fade-in');
+            
             // Calculate how many grid rows this image should span
             const rowHeight = 10; // Must match grid-auto-rows in CSS
             const imageHeight = newImg.offsetHeight;
             const rowSpan = Math.ceil(imageHeight / rowHeight);
             newImg.style.setProperty('--row-span', rowSpan);
-        };
+            
+            loadedCount++;
+            if (loadedCount === randomImageNumbers.length) {
+                setTimeout(() => {
+                    isLoading = false;
+                }, 100);
+            }
+        });
         
-        newImg.onerror = () => {
+        // Use addEventListener for error event
+        newImg.addEventListener('error', () => {
             // Handle case where image doesn't exist
             console.log(`Image ${imageNum} not found`);
-        };
+            
+            loadedCount++;
+            if (loadedCount === randomImageNumbers.length) {
+                setTimeout(() => {
+                    isLoading = false;
+                }, 100);
+            }
+        });
         
+        // Add loading class initially
+        newImg.classList.add('loading');
         container.appendChild(newImg);
     });
-    
-    // Add a small delay before allowing next batch
-    setTimeout(() => {
-        isLoading = false;
-    }, 100);
 }
 
 // Load initial batch
